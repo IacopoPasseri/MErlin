@@ -6,8 +6,6 @@ Stepwise grimoire designed as a modular workflow for PacBio/ONT methylome data: 
 ## Index
 
 1. Raw data
-    1.1. ONT data
-    1.2. PB data
 2. Methylation basecalling
 3. Data check
 4. Filtering
