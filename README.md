@@ -29,3 +29,31 @@ How is the repo structured?
 
 ## What's next?
 Take a look to the data and check the script for a quick run. We can then meet up to align perhaps?
+
+
+# Step by step
+
+## 1 - Cross-reference the methylation basecalling (BED or GFF3 format) with genomic annotation
+```
+python3 xam.py -g SmBL225C.gff3 -m F5.gff3 -o results_xam —no-split
+```
+## 2 - Differential methylation distribution 
+```
+python3 dixam.py -g SmBL225C.gff3 -m F5.gff3 -M F9.gff3 -o results_dixam —no-split 
+```
+## 3 - Spatial distribution (OriC-Ter)
+```
+python3 spacem.py --gff SmBL225C.gff3 --fasta SmBL225C_reference.fasta --methylation F5.gff3 --motifs motifs.txt --outdir results_spacem --prefix F5
+```
+## 4 - Motifs analysis
+```
+python3 mematch.py --gff SmBL225C.gff3 --methylation F5.gff3 --motifs motifs.txt --fasta SmBL225C_reference.fasta --outdir results_mematch --prefix F5
+```
+## 5 - Superfancy image
+```
+to debug, something's wrong..
+```
+## 6 - Differential Expression and Methylation (DiEM) analysis
+```
+python3 diem.py --geneexp DESeq2_results_all_BL.csv --methylation SmBL225C_methylation_by_feature.tsv --outdir results_diem
+```
