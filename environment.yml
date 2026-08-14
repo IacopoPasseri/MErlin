@@ -1,0 +1,68 @@
+# MErlin 2.1.0 — conda environment
+#
+#   conda env create -f environment.yml     # run this from the repository root:
+#   conda activate merlin                   # the pip: section uses a relative path
+#   merlin doctor
+#
+# mamba env create -f environment.yml does the same thing, faster.
+# Use -n NAME to pick a different environment name.
+
+name: merlin
+
+channels:
+  - conda-forge
+  - bioconda
+
+dependencies:
+  # ---- interpreter -------------------------------------------------------
+  - python=3.11          # MErlin needs 3.10 or newer
+  - pip
+
+  # ---- core: nothing runs without these ----------------------------------
+  - numpy
+  - pandas
+  - scipy
+  - matplotlib-base
+
+  # ---- ml: diem's classifier and logistic regression ---------------------
+  - scikit-learn
+  - statsmodels
+  - seaborn
+
+  # ---- store / hic: the harmonise HDF5 store and .cool reading -----------
+  - h5py
+  - cooler               # optional; h5py's native .cool reader is used without it
+
+  # ---- reads: phase and pileup -------------------------------------------
+  - pysam
+
+  # ---- config: YAML configs for `merlin run` -----------------------------
+  - pyyaml
+
+  # ---- optional external binaries ----------------------------------------
+  # Each has a fallback inside MErlin — drop any line you do not need.
+  - modkit               # reference modBAM pileup; else MErlin's internal pysam pileup
+  - samtools             # with minimap2, aligns an unaligned modBAM
+  - minimap2
+
+  # ---- optional: R, needed ONLY for the roundtable.R circos figure --------
+  # `merlin spacem --circular` draws a circular genome figure with no R at all.
+  # Uncomment these four lines if you want roundtable.R.
+  # - r-base
+  # - r-optparse
+  # - r-data.table
+  # - r-circlize
+  # - bioconductor-biostrings
+
+  # ---- MErlin itself, from the wheel bundled in this repository ----------
+  - pip:
+      - "./merlin-multiomics/assets/merlin_multiomics-2.1.0-py3-none-any.whl[all]"
+
+# Notes
+# -----
+# * modkit is not built for every platform on bioconda. If solving fails on
+#   Apple silicon, either drop the `- modkit` line (the internal backend runs
+#   instead) or create the environment with CONDA_SUBDIR=osx-64.
+# * To install the package in editable mode from your own source tree instead,
+#   delete the pip: block above and run, inside the activated environment:
+#       python3 -m pip install -e "/path/to/merlin-2.1.0[all]"
